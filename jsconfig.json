@@ -8,7 +8,7 @@
       "@models/*": ["./lib/models/*"],
       "@routes/*": ["./lib/routes/*"],
 
-      "@tests/*": ["__tests__/*"]
+      "@tests/*": ["tests/*"]
     }
   }
 }

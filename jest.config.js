@@ -18,16 +18,16 @@ module.exports = {
     '^@models/(.*)$': '<rootDir>/lib/models/$1',
     '^@routes/(.*)$': '<rootDir>/lib/routes/$1',
 
-    '^@tests/(.*)$': '<rootDir>/__tests__/$1'
+    '^@tests/(.*)$': '<rootDir>/tests/$1'
   },
   moduleFileExtensions: ['js'],
 
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
-    '<rootDir>/__tests__/_.*\\.js',
-    '<rootDir>/__tests__/.eslintrc.js',
-    '<rootDir>/__tests__/test-files/*'
+    '<rootDir>/tests/_.*\\.js',
+    '<rootDir>/tests/.eslintrc.js',
+    '<rootDir>/tests/test-files/*'
   ],
 
-  setupFiles: ['<rootDir>/__tests__/_env.js']
+  setupFiles: ['<rootDir>/tests/_env.js']
 }
