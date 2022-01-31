@@ -17,7 +17,7 @@ exports.Vehicles = {
       enum: [
         0, // Small
         1, // Medium
-        2  // Large
+        2 // Large
       ]
     },
     createdAt: {
