@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@lib/*": ["./lib/*"],
+      "@config": ["./config.js"],
+      "@models/*": ["./lib/models/*"],
+      "@routes/*": ["./lib/routes/*"],
+
+      "@tests/*": ["__tests__/*"]
+    }
+  }
+}

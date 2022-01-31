@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "Installing npm dependencies"
+npm i --legacy-peer-deps
+
+docker compose --file ./docker-compose.yaml up --detach
+
+echo "Setup fin."
