@@ -1,11 +1,11 @@
 'use strict'
 
-exports.Receipts = {
+exports.Invoices = {
   type: 'object',
   properties: {
     _id: {
       type: 'objectId',
-      description: 'Receipt Id'
+      description: 'Invoice Id'
     },
     slotId: {
       type: 'objectId',
@@ -31,11 +31,11 @@ exports.Receipts = {
     },
     createdAt: {
       type: 'string',
-      description: 'Date when the receipt was created'
+      description: 'Date when the invoice was created'
     },
     updatedAt: {
       type: 'string',
-      description: 'Date when the receipt was last updated'
+      description: 'Date when the invoice was last updated'
     }
   },
   required: [

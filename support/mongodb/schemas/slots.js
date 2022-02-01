@@ -11,6 +11,11 @@ exports.Slots = {
       type: 'objectId',
       description: 'Id of the lot it belongs to'
     },
+    label: {
+      type: 'string',
+      description: 'Slot label',
+      unique: true
+    },
     distance: {
       type: 'object',
       description: 'Distance from entry points'
