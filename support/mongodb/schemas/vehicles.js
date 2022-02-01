@@ -9,7 +9,7 @@ exports.Vehicles = {
     },
     vin: {
       type: 'string',
-      description: 'Vehicle Identification number',
+      description: 'Vehicle Identification Number',
       unique: true
     },
     type: {

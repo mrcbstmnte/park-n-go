@@ -11,9 +11,9 @@ exports.Invoices = {
       type: 'objectId',
       description: 'Id of the slot the vehicle was assigned'
     },
-    vehicleId: {
-      type: 'objectId',
-      description: 'Id of the vehicle assigned to the slot'
+    vin: {
+      type: 'string',
+      description: 'Vehicle Identification Number'
     },
     amount: {
       type: 'integer',
