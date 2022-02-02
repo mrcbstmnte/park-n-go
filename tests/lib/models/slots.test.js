@@ -246,7 +246,7 @@ describe('Slots Model', () => {
     })
   })
 
-  describe('#addNewEntryPoints', () => {
+  describe('#addNewEntryPoint', () => {
     beforeEach(async () => {
       await collection.insertMany([
         {
@@ -295,7 +295,7 @@ describe('Slots Model', () => {
     })
 
     it('should add new entry points to the distance property', async () => {
-      await model.addNewEntryPoints(lotId, '5e24763552e7fadad71de15e')
+      await model.addNewEntryPoint(lotId, '5e24763552e7fadad71de15e')
 
       const slots = await model.collection.find({
         lotId: new ObjectId(lotId)
