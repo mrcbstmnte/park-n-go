@@ -209,6 +209,20 @@ describe('Entry Points Model', () => {
         }
       ])
     })
+
+    it('should apply the iterator provided', async () => {
+      const entryPoints = await model.list(lotId, {
+        accumulator: {},
+        iterator: function (accumulator, document) {
+          accumulator[document._id.toString()] = 1
+        }
+      })
+
+      expect(entryPoints).toStrictEqual({
+        [entryPointId]: 1,
+        [anotherEntryPointId]: 1
+      })
+    })
   })
 
   describe('#exists', () => {
