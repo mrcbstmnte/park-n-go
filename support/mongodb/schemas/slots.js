@@ -16,6 +16,15 @@ exports.Slots = {
       description: 'Slot label',
       unique: true
     },
+    type: {
+      type: 'string',
+      description: 'Slot type',
+      enum: [
+        0, // Small
+        1, // Medium
+        2 // Large
+      ]
+    },
     distance: {
       type: 'object',
       description: 'Distance from entry points'

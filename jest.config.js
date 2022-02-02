@@ -15,6 +15,7 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^@lib/(.*)$': '<rootDir>/lib/$1',
+    '^@config': '<rootDir>/config.js',
     '^@models/(.*)$': '<rootDir>/lib/models/$1',
     '^@routes/(.*)$': '<rootDir>/lib/routes/$1',
 
