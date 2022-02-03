@@ -40,6 +40,24 @@ describe('Vehicles Model', () => {
   })
 
   describe('#create', () => {
+    const initialDate = new Date()
+
+    beforeEach(async () => {
+      await collection.insertMany([
+        {
+          _id: new ObjectId(vehicleId),
+          vin: 'AAB',
+          type: 0,
+          lastVisit: {
+            duration: 5,
+            date: new Date()
+          },
+          createdAt: initialDate,
+          updatedAt: initialDate
+        }
+      ])
+    })
+
     it('should create a new vehicle', async () => {
       const vehicle = await model.create({
         vin: 'AAA',
@@ -56,17 +74,12 @@ describe('Vehicles Model', () => {
     })
 
     it('should update if the vehicle was already registered', async () => {
-      const created = await model.create({
-        vin: 'AAA',
-        type: 0
-      })
-
       const updated = await model.create({
-        vin: 'AAA',
+        vin: 'AAB',
         type: 0
       })
 
-      expect(updated.createdAt.valueOf()).toBeGreaterThan(created.updatedAt.valueOf())
+      expect(updated.createdAt.valueOf()).toBeGreaterThan(initialDate.valueOf())
     })
   })
 
