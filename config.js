@@ -6,11 +6,11 @@ const {
   MONGO_PORT,
   MONGO_DB_NAME,
 
-  FLAT_RATE,
-  WHOLE_DAY_RATE,
+  FLAT_RATE = '40',
+  WHOLE_DAY_RATE = '5000',
 
   FLAT_RATE_HOURS = '3',
-  GRACE_PERIOD_HOURS = '1',
+  AWAY_THRESHOLD_HOURS = '1',
 
   SLOT_RATE_SMALL = '20',
   SLOT_RATE_MEDIUM = '60',
@@ -38,6 +38,6 @@ module.exports = {
     }
   },
 
-  gracePeriod: parseInt(GRACE_PERIOD_HOURS, 10),
+  awayThreshold: parseInt(AWAY_THRESHOLD_HOURS, 10),
   chargeThreshold: parseInt(FLAT_RATE_HOURS, 10)
 }
