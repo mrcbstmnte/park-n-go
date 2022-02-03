@@ -144,11 +144,7 @@ describe('Invoices Model', () => {
     })
 
     it('should settle the invoice', async () => {
-      await model.settle(invoiceId, 400)
-
-      const invoice = await model.collection.findOne({
-        _id: new ObjectId(invoiceId)
-      })
+      const invoice = await model.settle(invoiceId, 400)
 
       expect(invoice.amount).toEqual(400)
       expect(invoice.settled).toBeTruthy()
