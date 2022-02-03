@@ -127,19 +127,16 @@ describe('Vehicles Model', () => {
     it('should update the vehicle with the current time', async () => {
       const vehicle = await model.getByVin('AAB')
 
-      const updated = await model.updateLastVisit('AAB')
-
-      expect(updated.updatedAt.valueOf()).toBeGreaterThan(vehicle.updatedAt.valueOf())
-    })
-
-    it('should update an existing vehicle with a predefined date', async () => {
-      const lastVisitDate = new Date('2022-12-12')
-
       const updated = await model.updateLastVisit('AAB', {
-        endDate: lastVisitDate
+        duration: 5,
+        date: new Date('2022-02-02')
       })
 
-      expect(updated.updatedAt).toStrictEqual(lastVisitDate)
+      expect(updated.updatedAt.valueOf()).toBeGreaterThan(vehicle.updatedAt.valueOf())
+      expect(updated.lastVisit).toStrictEqual({
+        duration: 5,
+        date: new Date('2022-02-02')
+      })
     })
   })
 })

@@ -51,6 +51,27 @@ describe('Invoices Model', () => {
         slotId: new ObjectId(slotId),
         vin,
         amount: 0,
+        isContinuous: false,
+        settled: false,
+        hourlyRate: 40,
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date)
+      })
+    })
+
+    it('should create an invoice setting `isContinuous` to true', async () => {
+      const invoice = await model.create(slotId, {
+        vin,
+        rate: 40,
+        isContinuous: true
+      })
+
+      expect(invoice).toStrictEqual({
+        _id: expect.any(ObjectId),
+        slotId: new ObjectId(slotId),
+        vin,
+        amount: 0,
+        isContinuous: true,
         settled: false,
         hourlyRate: 40,
         createdAt: expect.any(Date),

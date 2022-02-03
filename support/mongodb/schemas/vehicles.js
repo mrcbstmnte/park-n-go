@@ -20,6 +20,23 @@ exports.Vehicles = {
         2 // Large
       ]
     },
+    lastVisit: {
+      type: 'object',
+      properties: {
+        duration: {
+          type: 'number',
+          description: 'Duration of the last stay on the complex. Always rounded up'
+        },
+        date: {
+          type: 'string',
+          description: 'Date when the vehicle last stayed'
+        }
+      },
+      required: [
+        'duration',
+        'date'
+      ]
+    },
     createdAt: {
       type: 'string',
       description: 'When the vehicle was created'

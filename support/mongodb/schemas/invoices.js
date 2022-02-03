@@ -20,6 +20,11 @@ exports.Invoices = {
       description: 'Total amount to be paid',
       default: 0
     },
+    isContinuous: {
+      type: 'boolean',
+      description: 'Flag to determine if continuous rate',
+      default: false
+    },
     settled: {
       type: 'boolean',
       description: 'If the amount was already settled',
