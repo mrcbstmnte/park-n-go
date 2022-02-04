@@ -489,6 +489,19 @@ describe('Invoice controller', () => {
         controller.settle(invoiceId)
       ).rejects.toThrow(BusinessLogicError)
     })
+
+    it('should throw an error if the end date is earlier than start/created date', async () => {
+      const now = new Date()
+      const endDate = new Date()
+      endDate.setHours(endDate.getHours() - 2)
+      invoice.createdAt = now
+
+      await expect(
+        controller.settle(invoiceId, {
+          endDate: endDate
+        })
+      ).rejects.toThrow(BusinessLogicError)
+    })
   })
 
   describe('#computeFlatRate', () => {
