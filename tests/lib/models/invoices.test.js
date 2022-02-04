@@ -119,6 +119,65 @@ describe('Invoices Model', () => {
     })
   })
 
+  describe('#getBySlot', () => {
+    beforeEach(async () => {
+      await collection.insertMany([
+        {
+          _id: new ObjectId(invoiceId),
+          slotId: new ObjectId(slotId),
+          vin,
+          amount: 0,
+          settled: false,
+          hourlyRate: 40,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          _id: new ObjectId(),
+          slotId: new ObjectId(slotId),
+          vin: 'CCB',
+          amount: 4,
+          settled: true,
+          hourlyRate: 40,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ])
+    })
+
+    it('should get the invoice by given slot Id', async () => {
+      const invoice = await model.getBySlot(slotId)
+
+      expect(invoice).toStrictEqual({
+        _id: new ObjectId(invoiceId),
+        slotId: new ObjectId(slotId),
+        vin,
+        amount: 0,
+        settled: false,
+        hourlyRate: 40,
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date)
+      })
+    })
+
+    it('should get the invoice by given slot Id with given query', async () => {
+      const invoice = await model.getBySlot(slotId, {
+        settled: true
+      })
+
+      expect(invoice).toStrictEqual({
+        _id: expect.any(ObjectId),
+        slotId: new ObjectId(slotId),
+        vin: 'CCB',
+        amount: 4,
+        settled: true,
+        hourlyRate: 40,
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date)
+      })
+    })
+  })
+
   describe('#settle', () => {
     beforeEach(async () => {
       await collection.insertMany([
