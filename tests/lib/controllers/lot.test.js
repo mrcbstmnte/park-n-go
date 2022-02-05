@@ -39,10 +39,10 @@ describe('Lot Controller', () => {
 
     controller = new Controller({
       lotsModel: new LotsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       }),
       entryPointsModel: new EntryPointsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       })
     })
   })

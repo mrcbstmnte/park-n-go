@@ -7,6 +7,8 @@ const {
 const SlotsModel = require('@models/slots')
 const LotsModel = require('@models/lots')
 const EntryPointsModel = require('@models/entry-points')
+const VehiclesModel = require('@models/vehicles')
+const InvoicesModel = require('@models/invoices')
 
 const { NotFoundError } = require('@/lib/errors')
 
@@ -14,6 +16,8 @@ const Controller = require('@lib/controllers/slot')
 
 jest.mock('@models/slots')
 jest.mock('@models/lots')
+jest.mock('@models/vehicles')
+jest.mock('@models/invoices')
 jest.mock('@models/entry-points')
 
 describe('Slot controller', () => {
@@ -28,6 +32,7 @@ describe('Slot controller', () => {
   let mongoClient
 
   const lotId = 'lotId'
+  const slotId = 'slotId'
 
   beforeAll(async () => {
     mongoClient = new MongoClient('mongodb://localhost:27017', {
@@ -40,13 +45,19 @@ describe('Slot controller', () => {
 
     controller = new Controller({
       slotsModel: new SlotsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       }),
       lotsModel: new LotsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       }),
       entryPointsModel: new EntryPointsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
+      }),
+      vehiclesModel: new VehiclesModel(mongoClient, {
+        databaseName: 'test'
+      }),
+      invoicesModel: new InvoicesModel(mongoClient, {
+        databaseName: 'test'
       })
     })
   })
@@ -62,6 +73,14 @@ describe('Slot controller', () => {
 
     it('should have an instance of entry points model', () => {
       expect(controller.entryPointsModel).toBeInstanceOf(EntryPointsModel)
+    })
+
+    it('should have an instance of vehicles model', () => {
+      expect(controller.vehiclesModel).toBeInstanceOf(VehiclesModel)
+    })
+
+    it('should have an instance of invoices model', () => {
+      expect(controller.invoicesModel).toBeInstanceOf(InvoicesModel)
     })
 
     it('should throw an error if slots model is not provided', () => {
@@ -92,6 +111,41 @@ describe('Slot controller', () => {
         })
       }).toThrow()
     })
+
+    it('should throw an error if vehicles model is not provided', () => {
+      expect(() => {
+        return new Controller({
+          slotsModel: new SlotsModel(mongoClient, {
+            databaseName: 'test'
+          }),
+          lotsModel: new LotsModel(mongoClient, {
+            databaseName: 'test'
+          }),
+          entryPointsModel: new EntryPointsModel(mongoClient, {
+            databaseName: 'test'
+          })
+        })
+      }).toThrow()
+    })
+
+    it('should throw an error if invoices model is not provided', () => {
+      expect(() => {
+        return new Controller({
+          slotsModel: new SlotsModel(mongoClient, {
+            databaseName: 'test'
+          }),
+          lotsModel: new LotsModel(mongoClient, {
+            databaseName: 'test'
+          }),
+          entryPointsModel: new EntryPointsModel(mongoClient, {
+            databaseName: 'test'
+          }),
+          vehiclesModel: new VehiclesModel(mongoClient, {
+            databaseName: 'test'
+          })
+        })
+      }).toThrow()
+    })
   })
 
   describe('#create', () => {
@@ -116,7 +170,13 @@ describe('Slot controller', () => {
 
       controller.slotsModel
         .bulkCreate
-        .mockResolvedValue()
+        .mockResolvedValue([
+          {
+            _id: 'slotId',
+            name: 'AAA',
+            type: 1
+          }
+        ])
 
       controller.lotsModel
         .exists
@@ -134,7 +194,15 @@ describe('Slot controller', () => {
     })
 
     it('should create slots for the parking lot', async () => {
-      await controller.create(lotId, slots)
+      const createdSlots = await controller.create(lotId, slots)
+
+      expect(createdSlots).toStrictEqual([
+        {
+          id: 'slotId',
+          name: 'AAA',
+          type: 'medium'
+        }
+      ])
 
       expect(controller.lotsModel.exists).toHaveBeenCalledTimes(1)
       expect(controller.lotsModel.exists).toHaveBeenCalledWith(lotId)
@@ -238,6 +306,108 @@ describe('Slot controller', () => {
     })
   })
 
+  describe('#get', () => {
+    beforeEach(() => {
+      controller.slotsModel
+        .getById
+        .mockResolvedValue({
+          _id: slotId,
+          type: 2,
+          distance: {}
+        })
+
+      controller.invoicesModel
+        .getBySlot
+        .mockResolvedValue({
+          _id: 'invoiceId',
+          vin: 'vin',
+          rate: 40
+        })
+
+      controller.vehiclesModel
+        .getByVin
+        .mockResolvedValue({
+          _id: 'vehicleId',
+          vin: 'vin',
+          type: 1
+        })
+    })
+
+    it('should get the slot', async () => {
+      const slot = await controller.get(slotId)
+
+      expect(slot).toStrictEqual({
+        id: 'slotId',
+        type: 'large',
+        distance: {},
+        vehicle: {
+          id: 'vehicleId',
+          vin: 'vin',
+          type: 'medium'
+        },
+        invoice: {
+          id: 'invoiceId',
+          rate: 40
+        }
+      })
+
+      expect(controller.slotsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.slotsModel.getById).toHaveBeenCalledWith(slotId)
+
+      expect(controller.invoicesModel.getBySlot).toHaveBeenCalledTimes(1)
+      expect(controller.invoicesModel.getBySlot).toHaveBeenCalledWith(slotId)
+
+      expect(controller.vehiclesModel.getByVin).toHaveBeenCalledTimes(1)
+      expect(controller.vehiclesModel.getByVin).toHaveBeenCalledWith('vin')
+    })
+
+    it('should return only the slot details if the invoice was not found', async () => {
+      controller.invoicesModel
+        .getBySlot
+        .mockResolvedValue(null)
+
+      const slot = await controller.get(slotId)
+
+      expect(slot).toStrictEqual({
+        id: 'slotId',
+        type: 'large',
+        distance: {}
+      })
+
+      expect(controller.slotsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.invoicesModel.getBySlot).toHaveBeenCalledTimes(1)
+      expect(controller.vehiclesModel.getByVin).toHaveBeenCalledTimes(0)
+    })
+
+    it('should throw an error if the slot was not found', async () => {
+      controller.slotsModel
+        .getById
+        .mockResolvedValue(null)
+
+      await expect(
+        controller.get(slotId)
+      ).rejects.toThrow(NotFoundError)
+
+      expect(controller.slotsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.invoicesModel.getBySlot).toHaveBeenCalledTimes(0)
+      expect(controller.vehiclesModel.getByVin).toHaveBeenCalledTimes(0)
+    })
+
+    it('should throw an error if the vehicle was not found', async () => {
+      controller.vehiclesModel
+        .getByVin
+        .mockResolvedValue(null)
+
+      await expect(
+        controller.get(slotId)
+      ).rejects.toThrow(NotFoundError)
+
+      expect(controller.slotsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.invoicesModel.getBySlot).toHaveBeenCalledTimes(1)
+      expect(controller.vehiclesModel.getByVin).toHaveBeenCalledTimes(1)
+    })
+  })
+
   describe('#list', () => {
     beforeEach(() => {
       controller.lotsModel
@@ -249,11 +419,13 @@ describe('Slot controller', () => {
         .mockResolvedValue([
           {
             _id: 'slotId1',
-            name: 'AA'
+            name: 'AA',
+            type: 1
           },
           {
             _id: 'slotId2',
-            name: 'BB'
+            name: 'BB',
+            type: 2
           }
         ])
     })
@@ -264,11 +436,13 @@ describe('Slot controller', () => {
       expect(slots).toStrictEqual([
         {
           id: 'slotId1',
-          name: 'AA'
+          name: 'AA',
+          type: 'medium'
         },
         {
           id: 'slotId2',
-          name: 'BB'
+          name: 'BB',
+          type: 'large'
         }
       ])
 

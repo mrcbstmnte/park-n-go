@@ -95,6 +95,74 @@ describe('Slots Model', () => {
     })
   })
 
+  describe('#getById', () => {
+    beforeEach(async () => {
+      await collection.insertMany([
+        {
+          _id: new ObjectId(slotId),
+          label: 'WKVNHJ',
+          lotId: new ObjectId(lotId),
+          type: 0,
+          distance: {
+            '5e24763552e7fadad71de154': 0,
+            '5e24763552e7fadad71de15b': 1,
+            '5e24763552e7fadad71de15c': 0
+          },
+          occupied: false,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          _id: new ObjectId(nearestSlotId),
+          label: '1LPYHT',
+          lotId: new ObjectId(lotId),
+          type: 1,
+          distance: {
+            '5e24763552e7fadad71de154': 0,
+            '5e24763552e7fadad71de15b': 0,
+            '5e24763552e7fadad71de15c': 1
+          },
+          occupied: false,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          _id: new ObjectId(),
+          label: 'MTHG6T',
+          lotId: new ObjectId(lotId),
+          type: 0,
+          distance: {
+            '5e24763552e7fadad71de154': 0,
+            '5e24763552e7fadad71de15b': 0,
+            '5e24763552e7fadad71de15c': 1
+          },
+          occupied: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ])
+    })
+
+    it('should get the slot of given Id', async () => {
+      const slot = await model.getById(slotId)
+
+      expect(slot).toStrictEqual({
+        _id: new ObjectId(slotId),
+        label: 'WKVNHJ',
+        lotId: new ObjectId(lotId),
+        type: 0,
+        distance: {
+          '5e24763552e7fadad71de154': 0,
+          '5e24763552e7fadad71de15b': 1,
+          '5e24763552e7fadad71de15c': 0
+        },
+        occupied: false,
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date)
+      })
+    })
+  })
+
   describe('#findNearest', () => {
     beforeEach(async () => {
       await collection.insertMany([

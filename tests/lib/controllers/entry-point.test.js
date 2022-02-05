@@ -44,13 +44,13 @@ describe('Entry point controller', () => {
 
     controller = new Controller({
       slotsModel: new SlotsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       }),
       entryPointsModel: new EntryPointsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       }),
       lotsModel: new LotsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       })
     })
   })

@@ -50,16 +50,16 @@ describe('Invoice controller', () => {
 
     controller = new Controller({
       slotsModel: new SlotsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       }),
       entryPointsModel: new EntryPointsModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       }),
       invoicesModel: new InvoicesModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       }),
       vehiclesModel: new VehiclesModel(mongoClient, {
-        database: 'test'
+        databaseName: 'test'
       })
     })
   })
