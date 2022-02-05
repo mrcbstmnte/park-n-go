@@ -20,7 +20,7 @@ describe('Slots Model', () => {
   const nearestSlotId = '5fff191e810c19729de83d45'
 
   beforeAll(async () => {
-    const mongoClient = new MongoClient('mongodb://localhost:27017', {
+    const mongoClient = new MongoClient('mongodb://mongodb1:27401', {
       useUnifiedTopology: true,
       writeConcern: 'majority',
       ignoreUndefined: true

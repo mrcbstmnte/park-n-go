@@ -20,7 +20,7 @@ describe('Invoices Model', () => {
   const vin = 'AABB'
 
   beforeAll(async () => {
-    const mongoClient = new MongoClient('mongodb://localhost:27017', {
+    const mongoClient = new MongoClient('mongodb://mongodb1:27401', {
       useUnifiedTopology: true,
       writeConcern: 'majority',
       ignoreUndefined: true

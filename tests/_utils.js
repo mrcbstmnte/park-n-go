@@ -20,7 +20,7 @@ exports.getConfig = function () {
 
     mongodb: {
       databaseName: 'test',
-      connectUri: 'mongodb://localhost:27017'
+      connectUri: 'mongodb://mongodb1:27401'
     }
   }
 }

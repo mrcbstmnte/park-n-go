@@ -3,7 +3,6 @@
 const {
   APP_PORT,
 
-  MONGO_PORT,
   MONGO_DB_NAME,
 
   FLAT_RATE = '40',
@@ -24,7 +23,7 @@ module.exports = {
 
   mongodb: {
     databaseName: MONGO_DB_NAME,
-    connectUri: `mongodb://mongodb:${MONGO_PORT}`
+    connectUri: `mongodb://mongodb1:27401,mongodb1:27402,mongodb1:27403/${MONGO_DB_NAME}?replicaSet=parkNGo`
   },
 
   rates: {
