@@ -40,7 +40,7 @@ describe('Invoice controller', () => {
   const invoiceId = 'invoiceId'
 
   beforeAll(async () => {
-    mongoClient = new MongoClient('mongodb://localhost:27017', {
+    mongoClient = new MongoClient('mongodb://mongodb1:27401', {
       useUnifiedTopology: true,
       writeConcern: 'majority',
       ignoreUndefined: true

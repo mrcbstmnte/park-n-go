@@ -35,7 +35,7 @@ describe('Slot controller', () => {
   const slotId = 'slotId'
 
   beforeAll(async () => {
-    mongoClient = new MongoClient('mongodb://localhost:27017', {
+    mongoClient = new MongoClient('mongodb://mongodb1:27401', {
       useUnifiedTopology: true,
       writeConcern: 'majority',
       ignoreUndefined: true
@@ -321,7 +321,7 @@ describe('Slot controller', () => {
         .mockResolvedValue({
           _id: 'invoiceId',
           vin: 'vin',
-          rate: 40
+          hourlyRate: 40
         })
 
       controller.vehiclesModel
