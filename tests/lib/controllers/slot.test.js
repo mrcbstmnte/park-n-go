@@ -347,7 +347,8 @@ describe('Slot controller', () => {
         },
         invoice: {
           id: 'invoiceId',
-          rate: 40
+          rate: 40,
+          started: undefined
         }
       })
 
