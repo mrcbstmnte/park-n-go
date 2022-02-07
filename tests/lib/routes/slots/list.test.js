@@ -36,7 +36,7 @@ describe('Slot list route', () => {
     const app = createMockServer(route.router)
 
     request = (body) => supertest(app)
-      .get('/slots')
+      .get('/slots/lotId')
       .send(body)
   })
 
@@ -63,7 +63,7 @@ describe('Slot list route', () => {
 
   describe('success', () => {
     it('should respond with 200 if slot listing was successful', async () => {
-      const response = await request(req.body).expect(200)
+      const response = await request(req.params).expect(200)
 
       expect(response.body).toStrictEqual({
         ok: true,
@@ -83,28 +83,6 @@ describe('Slot list route', () => {
       expect(route.controller.list).toHaveBeenCalledWith(
         'lotId'
       )
-    })
-  })
-
-  describe('validation', () => {
-    describe('lotId', () => {
-      it('should respond with 409 if lotId is undefined', async () => {
-        delete req.body.lotId
-
-        await request(req.body).expect(409)
-      })
-
-      it('should respond with 409 if lotId is not a string', async () => {
-        req.body.lotId = 123
-
-        await request(req.body).expect(409)
-      })
-
-      it('should respond with 409 if lotId is an empty string', async () => {
-        req.body.lotId = ''
-
-        await request(req.body).expect(409)
-      })
     })
   })
 })
