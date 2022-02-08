@@ -172,6 +172,10 @@ describe('Invoice controller', () => {
           _id: slotId,
           type: 1
         })
+
+      controller.invoicesModel
+        .getUnsettledInvoice
+        .mockResolvedValue(null)
     })
 
     it('should create an invoice for the vehicle', async () => {
@@ -298,6 +302,18 @@ describe('Invoice controller', () => {
       expect(controller.vehiclesModel.create).toHaveBeenCalledTimes(0)
       expect(controller.invoicesModel.create).toHaveBeenCalledTimes(0)
       expect(controller.slotsModel.updateOccupancy).toHaveBeenCalledTimes(0)
+    })
+
+    it('should throw an error if there is still an unsettled invoice', async () => {
+      controller.invoicesModel
+        .getUnsettledInvoice
+        .mockResolvedValue({
+          _id: 'invoiceId'
+        })
+
+      await expect(
+        controller.create(entryPointId, vehicle)
+      ).rejects.toThrow(BusinessLogicError)
     })
   })
 

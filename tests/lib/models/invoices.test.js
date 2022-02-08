@@ -178,6 +178,54 @@ describe('Invoices Model', () => {
     })
   })
 
+  describe('#getUnsettledInvoice', () => {
+    beforeEach(async () => {
+      await collection.insertMany([
+        {
+          _id: new ObjectId(invoiceId),
+          slotId: new ObjectId(slotId),
+          vin,
+          amount: 0,
+          settled: false,
+          hourlyRate: 40,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          _id: new ObjectId(),
+          slotId: new ObjectId(slotId),
+          vin: 'CCB',
+          amount: 4,
+          settled: true,
+          hourlyRate: 40,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ])
+    })
+
+    it('should get the invoice by given VIN', async () => {
+      const invoice = await model.getUnsettledInvoice(vin)
+
+      expect(invoice).toStrictEqual({
+        _id: new ObjectId(invoiceId),
+        slotId: new ObjectId(slotId),
+        vin,
+        amount: 0,
+        settled: false,
+        hourlyRate: 40,
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date)
+      })
+    })
+
+    it('should return `null` if there are no unsettled invoice', async () => {
+      const invoice = await model.getUnsettledInvoice('CCB')
+
+      expect(invoice).toBeNull()
+    })
+  })
+
   describe('#settle', () => {
     beforeEach(async () => {
       await collection.insertMany([
