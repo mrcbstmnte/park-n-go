@@ -4,7 +4,7 @@
   "description": "Your car. We decide.",
   "main": "server.js",
   "scripts": {
-    "setup": "./scripts/setup",
+    "setup": "node -r module-alias/register -r dotenv/config scripts/init-db",
     "test": "jest --runInBand",
     "start": "node -r module-alias/register -r dotenv/config server.js",
     "dev": "nodemon -r module-alias/register -r dotenv/config server.js"

@@ -1,0 +1,6 @@
+FROM mongo:4.0-xenial
+
+ADD files/config.js /tmp/config.js
+ADD files/configure.sh /tmp/configure.sh
+
+CMD /tmp/configure.sh

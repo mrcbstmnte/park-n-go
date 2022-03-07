@@ -1,0 +1,48 @@
+version: "3"
+services:
+  mongodb1:
+    hostname: mongodb1
+    container_name: mongodb-40-1
+    image: mongo:4.0-xenial
+    expose:
+      - 27401
+    ports:
+      - 27401:27401
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "mongodb-test", "--port", "27401" ]
+    networks:
+      - mongodb
+  mongodb2:
+    hostname: mongodb2
+    container_name: mongodb-40-2
+    image: mongo:4.0-xenial
+    expose:
+      - 27402
+    ports:
+      - 27402:27402
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "mongodb-test", "--port", "27402" ]
+    networks:
+      - mongodb
+  mongodb3:
+    hostname: mongodb3
+    container_name: mongodb-40-3
+    image: mongo:4.0-xenial
+    expose:
+      - 27403
+    ports:
+      - 27403:27403
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "mongodb-test", "--port", "27403" ]
+    networks:
+      - mongodb
+  mongodb-configurator:
+    build:
+      context: ./build
+      dockerfile: Dockerfile-mongo-configurator
+    hostname: mongodb-40-configurator
+    container_name: mongodb-40-configurator
+    networks:
+      - mongodb
+networks:
+  mongodb:
